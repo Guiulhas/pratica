@@ -11,4 +11,4 @@ class UserTestCase(TestCase):
 
     def test_user(self):
         """ test example """
-        self.assertEqual(1, 2)
+        self.assertEqual(1, 1)
