@@ -1,0 +1,42 @@
+{% load static %}
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Estacionamento</title>
+  <link rel="stylesheet" href="{% static 'estacionamento/painel.css' %}">
+  <script src="{% static 'estacionamento/painel.js' %}" defer></script>
+</head>
+<body>
+  <header>
+    <div class="cabecalho">
+      <span class="marca" aria-hidden="true">P</span>
+      <span>Estacionamento</span>
+      <button type="button" id="sair" class="secundario" hidden>Sair</button>
+    </div>
+  </header>
+  <main>
+    <section id="acesso" class="cartao acesso">
+      <h1>Entrar no painel</h1>
+      <form id="login" method="post">
+        <label>Usuário<input name="username" autocomplete="username" required></label>
+        <label>Senha<input name="password" type="password" autocomplete="current-password" required></label>
+        <button>Entrar</button>
+      </form>
+    </section>
+    <section id="painel" hidden>
+      <nav aria-label="Menu do estacionamento">
+        <button type="button" data-tela="movimentacoes">Entrada e saída</button>
+        <button type="button" data-tela="clientes">Clientes</button>
+        <button type="button" data-tela="veiculos">Veículos</button>
+        <button type="button" data-tela="vagas">Vagas</button>
+      </nav>
+      <h1 id="titulo"></h1>
+      <div id="conteudo"></div>
+    </section>
+    <p id="mensagem" role="status" class="mensagem" hidden></p>
+    <noscript>Ative o JavaScript para usar o painel.</noscript>
+  </main>
+</body>
+</html>

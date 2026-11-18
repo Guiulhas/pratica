@@ -1,3 +1,43 @@
+## API de gerenciamento de estacionamento
+
+Para rodar no Windows (PowerShell), use Python 3.11 com as dependências do projeto:
+
+```powershell
+py -3.11 -m venv venv
+.\venv\Scripts\python.exe -m pip install -r requirements.txt
+.\venv\Scripts\python.exe manage.py migrate
+.\venv\Scripts\python.exe manage.py createsuperuser
+.\venv\Scripts\python.exe manage.py runserver
+```
+
+Use `createsuperuser` se ainda não tiver um usuário para os testes. Para operar o
+estacionamento, abra o [painel](http://127.0.0.1:8000/) e entre com seu usuário
+Django. O painel permite cadastrar clientes, veículos e vagas, além de registrar
+entradas e saídas. Para consultar a documentação técnica da API, abra o
+[Swagger](http://127.0.0.1:8000/swagger/) para consultar e experimentar os
+endpoints. Autentique com um usuário Django. Para obter um token, envie
+`{"username":"SEU_USUARIO","password":"SUA_SENHA"}` em
+`POST /api/token-auth/` e use o cabeçalho `Authorization: Token SEU_TOKEN`.
+
+| Método e rota | Operação | Exemplo de JSON |
+| --- | --- | --- |
+| `POST /api/clientes/` | Cadastrar cliente | `{"nome":"Ana Silva","email":"ana@example.com","telefone":"11999999999"}` |
+| `POST /api/veiculos/` | Cadastrar veículo vinculado ao cliente | `{"cliente":1,"placa":"ABC1D23","modelo":"Onix"}` |
+| `POST /api/vagas/` | Cadastrar vaga | `{"codigo":"A01"}` |
+| `GET /api/vagas/?disponivel=true` | Listar vagas livres (use `false` para ocupadas) | — |
+| `POST /api/movimentacoes/` | Registrar entrada em uma vaga escolhida | `{"veiculo":1,"vaga":1}` |
+| `POST /api/movimentacoes/{id}/saida/` | Registrar saída pelo ID devolvido na entrada | Sem corpo |
+| `GET /api/movimentacoes/` | Consultar histórico de entradas e saídas | — |
+
+Substitua os IDs dos exemplos pelos retornados nos cadastros. Clientes, veículos
+e vagas também aceitam listagem, consulta individual e edição (`PUT`/`PATCH`).
+O sistema registra os horários automaticamente. Uma vaga é ocupada enquanto tiver
+uma movimentação sem saída e volta a ficar livre ao registrar a saída. Entradas
+em vagas ocupadas, entradas de veículos que já estão no estacionamento e saídas
+repetidas retornam `409 Conflict`.
+
+Para executar os testes: `.\venv\Scripts\python.exe manage.py test`.
+
 ### Bem-vindo ao DRF Quick Project!
 
 Nesta experiência de aprendizado interativa, você aprenderá uma breve visão sobre o desenvolvimento de Web APIs com Django Rest Framework (DRF). Seja você iniciante em Django ou já familiarizado com ele, este projeto fornecerá uma abordagem prática e passo a passo para criar APIs RESTful rapidamente.

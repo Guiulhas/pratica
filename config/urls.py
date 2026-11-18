@@ -16,16 +16,23 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from django.views.generic import TemplateView
 from rest_framework.routers import SimpleRouter
 from rest_framework.authtoken import views
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
 from users.api.views import UserProfileExampleViewSet
+from estacionamento.views import ClienteViewSet, MovimentacaoViewSet, VagaViewSet, VeiculoViewSet
 
 router = SimpleRouter()
 
 router.register("users", UserProfileExampleViewSet, basename="users")
+router.register("api/clientes", ClienteViewSet)
+router.register("api/veiculos", VeiculoViewSet)
+router.register("api/vagas", VagaViewSet)
+router.register("api/movimentacoes", MovimentacaoViewSet)
 
 urlpatterns = [
+    path("", TemplateView.as_view(template_name="estacionamento/painel.html"), name="painel-estacionamento"),
     path("admin/", admin.site.urls),
     path("api/token-auth/", views.obtain_auth_token),
     path('schema/', SpectacularAPIView.as_view(), name='schema'),
